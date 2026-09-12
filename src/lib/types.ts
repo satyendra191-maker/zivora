@@ -1,0 +1,11 @@
+export type Person = { id: string; name: string; age: number; city: string; distance: number; bio: string; intent: string; interests: string[]; image: string; verified: boolean; online: boolean; compatibility: number; demo?: boolean };
+export type Member = { id: string; name: string; email: string | null; age: number; city: string; bio: string; intent: string; role: string; demo: boolean; adult: boolean; incognito: boolean; suspended: boolean };
+export type Resource = { id: string; kind: string; ownerId: string; title: string; description: string; category: string; city: string; image: string; location: string; date: string; capacity: number; members: number; status: string; createdAt: string };
+export type Activity = { id: string; userId: string; targetId: string; kind: string };
+export type Chat = { id: string; userId: string; profileId: string; text: string; incoming: boolean; read: boolean; createdAt: string };
+export type Report = { id: string; userId: string; targetId: string; reason: string; details: string; status: string; createdAt: string };
+export type Post = { id: string; resourceId: string; userId: string; author: string; text: string; createdAt: string };
+export type Lead = { id: string; userId: string | null; name: string; email: string; source: string; status: string; details: string; createdAt: string };
+export type AppData = { user: Member; profiles: Person[]; resources: Resource[]; actions: Activity[]; messages: Chat[]; reports: Report[]; posts: Post[]; googleEnabled: boolean; members?: Member[]; audit?: {id: string; action: string; targetId: string; createdAt: string}[]; leads?: Lead[] };
+export type View = 'Discover' | 'Connections' | 'Messages' | 'Communities' | 'Events & Meetups' | 'Creators & Live' | 'Achievements' | 'Safety Center' | 'Settings' | 'Help & Support' | 'Admin';
+export type Modal = { type: 'profile'; person: Person } | { type: 'resource'; resource: Resource } | { type: 'create'; kind: string; resource?: Resource } | { type: 'report'; target: string } | { type: 'filters' } | { type: 'auth' } | { type: 'adult' } | { type: 'notifications' } | { type: 'invite' } | { type: 'feedback' } | { type: 'guide'; title: string } | null;
