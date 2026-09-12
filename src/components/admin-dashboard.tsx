@@ -35,7 +35,7 @@ export default function AdminDashboard({ adminName, adminId }: { adminName: stri
   const [statsError, setStatsError] = useState('');
   const [days, setDays] = useState(30);
   const [city, setCity] = useState('All cities');
-  const [dark, setDark] = useState(() => { try { return typeof window !== 'undefined' && window.localStorage.getItem('zivora-admin-theme') === 'dark'; } catch { return false; } });
+  const [dark, setDark] = useState(false);
   const [busy, setBusy] = useState(false);
   const [toast, setToast] = useState('');
   const [loadError, setLoadError] = useState('');
@@ -45,6 +45,11 @@ export default function AdminDashboard({ adminName, adminId }: { adminName: stri
   useEffect(() => {
     if (toast) { const t = setTimeout(() => setToast(''), 4000); return () => clearTimeout(t); }
   }, [toast]);
+
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- hydrating a persisted theme after mount is the standard SSR-safe pattern
+    try { setDark(window.localStorage.getItem('zivora-admin-theme') === 'dark'); } catch {}
+  }, []);
 
   const loadSnapshot = useCallback(async () => {
     const res = await fetch('/api/app');
