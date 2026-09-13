@@ -13,10 +13,18 @@ const globalForDb = globalThis as typeof globalThis & {
   __arenaNextJsPostgresqlPool?: Pool;
 };
 
+// Modern pg treats sslmode=require as verify-full, which fails on managed TLS
+// endpoints (e.g. Supabase poolers) that use self-signed intermediates. Restore
+// the legacy libpq "require" meaning: encrypt, but do not pin the certificate.
+const ssl = databaseUrl?.includes("sslmode=require")
+  ? { rejectUnauthorized: false }
+  : undefined;
+
 export const pool =
   globalForDb.__arenaNextJsPostgresqlPool ??
   new Pool({
     connectionString: databaseUrl ?? "postgresql://127.0.0.1:5432/unconfigured",
+    ssl,
   });
 
 if (process.env.NODE_ENV !== "production") {
